@@ -10,52 +10,51 @@
 	<h2>Tabla Sencilla - accesible</h2>
 	<p>Debe contener <code>scope, headers e id</code>. </p>
 	<table>
-  <caption>Tabla de horario accesible</caption>
-  <thead>
-    <tr>
-      <th scope="col">Horas</th>
-      <th scope="col">Lunes</th>
-      <th scope="col">Martes</th>
-      <th scope="col">Miércoles</th>
-      <th scope="col">Jueves</th>
-      <th scope="col">Viernes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">09.00-11.00</th>
-      <td>L.5</td>
-      <td>L.7</td>
-      <td>TEO.1</td>
-      <td>L.1</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th scope="row">11.00-13.00</th>
-      <td>L.6</td>
-      <td>L.8</td>
-      <td>TEO.2</td>
-      <td>L.4</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th scope="row">13.00-15.00</th>
-      <td>L.9</td>
-      <td>L.2</td>
-      <td>L.10</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th scope="row">14.00-16.00</th>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>L.3</td>
-    </tr>
-  </tbody>
-</table>
+		<caption> Tabla accesible  </caption>  
+		<tr>
+			<th scope="col" id="horas">Horas</th>
+			<th scope="col" id="lunes">Lunes</th>
+			<th scope="col" id="martes">Martes</th>
+			<th scope="col" id="miercoles">Miércoles</th>
+			<th scope="col" id="jueves">Jueves</th>
+			<th scope="col" id="viernes">Viernes</th>
+		</tr>
+		<tr>
+			<th scope="row" id="9a11" headers="horas">09.00-11.00</th>
+			<td headers="9a11 lunes">L.5</td>
+			<td headers="9a11 martes">L.7</td>
+			<td headers="9a11 miercoles">TEO.1</td>
+			<td headers="9a11 jueves">L.1</td>
+			<td headers="9a11 viernes">-</td>
+		</tr>
+		<tr>
+			<th scope="row" id="11a13" headers="horas">11.00-13.00</th>
+			<td headers="11a13 lunes">L.6</td>
+			<td headers="11a13 martes">L.8</td>
+			<td headers="11a13 miercoles">TEO.2</td>
+			<td headers="11a13 jueves">L.4</td>
+			<td headers="11a13 viernes">-</td>
+		</tr>	
 
+		<tr>
+			<th scope="row" id="13a15" headers="horas">13.00-15.00</th>
+			<td headers="13a15 lunes">L.9</td>
+			<td headers="13a15 martes">L.2</td>
+			<td headers="13a15 miercoles">L.10</td>
+			<td headers="13a15 jueves">-</td>
+			<td headers="13a15 viernes">-</td>
+		</tr>	
+
+		<tr>
+			<th scope="row" id="14a16" headers="horas">14.00-16.00</th>
+			<td headers="14a16 lunes">-</td>
+			<td headers="14a16 martes">-</td>
+			<td headers="14a16 miercoles">-</td>
+			<td headers="14a16 jueves">-</td>
+			<td headers="14a16 viernes">L.3</td>
+		</tr>	
+
+		
+		</table>
 </body>
 </html>
