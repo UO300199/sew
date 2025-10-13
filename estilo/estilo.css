@@ -9,34 +9,39 @@ body {
 
 /*Especifidad 001*/
 header {
-  color: #ffb7b7;
+  /*Hereda color #000000 de body*/
   background-color: #000000;
 }
 
+/*Especifidad 010*/
+.active{
+  /*Hereda background-color #000000 de header*/
+  color:#9ac6e5;
+}
+
+/*Especifidad 012*/
+body p:first-of-type {
+  font-size: 0.7em;
+}
+
+/*Especifidad 013*/
+body p:first-of-type strong {
+  font-weight: bold;
+  text-decoration-line: none;
+}
+
+
 /*Especificidad 003*/
-body > header > h1 { 
-	font-family: Tahoma,Verdana,Segoe,sans-serif;
-  background-color: inherit;
-  color: inherit;
+header > h1 > a { 
+  /*Herencia de background-color #000000 de header*/
+  font-weight: bold;
+  color: #FE7F71;
+  text-decoration-line: none;
 }
 
-/*Especificidad 004*/
-body > header > h1 a { 
-  background-color: inherit;
-  color: inherit;
-  text-decoration: none;
-}
-
-/*Especificidad 003*/
-body > header > nav { 
-	font-family: Tahoma,Verdana,Segoe,sans-serif;
-  background-color: inherit;
-  color: inherit;
-}
-
-/*Especificidad 004*/
-body > header > nav a { 
-	background-color: inherit;
-  color: inherit;
-  /*text-decoration: none;*/
+/*Especificidad 002*/
+header a { 
+  /*Herencia de background-color #000000 de header*/
+  color: #ffb7b7;
+  text-decoration-line: none;
 }
