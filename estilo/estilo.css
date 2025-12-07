@@ -1,0 +1,47 @@
+/*Creado por Julián Fernández Herruzo UO300199*/
+/*Estilos generales del proyecto MotoGP-Desktop*/
+/*Especificidad 001*/
+body {
+	font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+  color: #000000;
+  background-color: #C0C0C0;
+}
+
+/*Especifidad 001*/
+header {
+  /*Hereda color #000000 de body*/
+  background-color: #000000;
+}
+
+/*Especifidad 010*/
+.active{
+  /*Hereda background-color #000000 de header*/
+  color:#86aeca;
+}
+
+/*Especifidad 012*/
+body > p:first-of-type {
+  font-size: 0.7em;
+}
+
+/*Especifidad 013*/
+body > p:first-of-type strong {
+  font-weight: bold;
+  text-decoration-line: none;
+}
+
+
+/*Especificidad 003*/
+header > h1 > a { 
+  /*Herencia de background-color #000000 de header*/
+  font-weight: bold;
+  color: #FE7F71;
+  text-decoration-line: none;
+}
+
+/*Especificidad 002*/
+header a { 
+  /*Herencia de background-color #000000 de header*/
+  color: #ffb7b7;
+  text-decoration-line: none;
+}

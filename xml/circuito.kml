@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <Placemark>
+      <name>Linea de salida</name>
+      <description>Punto origen del circuito</description>
+      <Point>
+        <coordinates>6.524123,52.962276,0</coordinates>
+        <altitudeMode>relativeToGround</altitudeMode>
+      </Point>
+    </Placemark>
+    <name>Circuito TT Circuit Assen</name>
+    <Placemark>
+      <LineString>
+        <extrude>1</extrude>
+        <tessellation>1</tessellation>
+        <coordinates>6.524123,52.962276,0
+6.529053,52.964607,0
+6.530947,52.963769,0
+6.531174,52.962113,0
+6.530339,52.961843,0
+6.529323,52.962420,0
+6.529886,52.963158,0
+6.529513,52.963520,0
+6.528494,52.962623,0
+6.528088,52.961950,0
+6.523702,52.958202,0
+6.521441,52.957289,0
+6.521069,52.956951,0
+6.520864,52.955118,0
+6.520247,52.954711,0
+6.514076,52.954590,0
+6.512867,52.952762,0
+6.511222,52.953353,0
+6.511164,52.954009,0
+6.513108,52.955884,0
+6.513108,52.955884,0
+6.517145,52.957027,0
+6.518789,52.957189,0
+6.521009,52.958096,0
+6.521463,52.960828,0
+6.522080,52.960926,0
+6.522719,52.961560,0
+6.524123,52.962276,0
+</coordinates>
+        <altitudeMode>relativeToGround</altitudeMode>
+      </LineString>
+      <Style>
+        <LineStyle>
+          <color>#ff0000ff</color>
+          <width>5</width>
+        </LineStyle>
+      </Style>
+    </Placemark>
+  </Document>
+</kml>

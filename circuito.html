@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+
+<html lang="es">
+<head>
+    <!-- Datos que describen el documento -->
+    <meta charset="UTF-8" />
+    <title>MotoGP-Circuito</title>
+	<meta name="author" content="Julián Fernández"/>
+	<meta name="description" content="Circuito de MotoGP"/>
+	<meta name="keywords" content="moto, MotoGP, circuito"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />
+	<link rel="stylesheet" type="text/css" href="estilo/layout.css" />
+	<link rel="icon" type="image/x-icon" href="multimedia/favicon-16px.ico">
+	<link rel="icon" type="image/x-icon" href="multimedia/favicon-32px.ico">	
+	<link rel="icon" type="image/x-icon" href="multimedia/favicon.ico">
+	<link href='https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css' rel='stylesheet' />
+	<script src='https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js'></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+	<script src="js/circuito.js" defer></script>
+</head>
+
+<body>
+    <header>
+		<!-- Datos con el contenidos que aparece en el navegador -->
+		<h1><a href="index.html" title="Ir a la página principal">MotoGP Desktop</a></h1>
+		<nav>
+			<a href="index.html" title="Página de inicio">Inicio</a>
+			<a href="piloto.html" title="Información del piloto">Piloto</a>
+			<a href="circuito.html" class="active" title="Información del circuito">Circuito</a>
+			<a href="meteorologia.html" title="Información meteorológica">Meteorología</a>
+			<a href="clasificaciones.php" title="Clasificaciones MotoGP">Clasificaciones</a>
+			<a href="juegos.html" title="Juegos de MotoGP-Desktop">Juegos</a>
+			<a href="ayuda.html" title="Ayuda sobre MotoGP-Desktop">Ayuda</a>
+		</nav>
+	</header>
+	<p>Estás en: <a href="index.html" title="Página de inicio">Inicio</a> >> <strong>Circuito</strong></p>
+	<main>
+		<h2>Circuito de MotoGP</h2>
+		<label for="archivoHTML">Seleccione un archivo HTML</label>
+		<input type="file" id="archivoHTML" accept=".html,.htm" name="archivoHTML"/>
+		<label for="archivoSVG">Seleccione un archivo SVG</label>
+		<input type="file" id="archivoSVG" accept=".svg" name="archivoSVG"/>
+		<label for="archivoKML">Seleccione un archivo KML</label>
+		<input type="file" id="archivoKML" accept=".kml" name="archivoKML"/>
+	</main>
+	<div></div>
+</body>
+</html>

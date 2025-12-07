@@ -1,0 +1,180 @@
+class Circuito {
+    
+    constructor(){
+        this.#comprobarApiFile();
+        this.#inicializarEventos();
+    }
+
+    #comprobarApiFile(){
+        if (!(window.File && window.FileReader && window.FileList && window.Blob))
+        {  
+            //El navegador no soporta el API File
+            const mensaje = document.createElement("p");
+            mensaje.textContent= "¡¡¡ Este navegador NO soporta el API File y este programa puede no funcionar correctamente !!!";
+            document.body.appendChild(mensaje);
+        }
+    }
+    #inicializarEventos() {
+        const inputFile = document.querySelectorAll('input');
+        inputFile[0].addEventListener('change', (evento) => {
+            this.leerArchivoHTML(evento.target.files);
+        });
+    }
+
+    leerArchivoHTML(files){
+        this.#comprobarApiFile();
+        //Solamente toma un archivo
+        var archivo = files[0];
+        //Solamente admite archivos de tipo texto
+        var tipoTexto = /text\/html/;
+
+        if (archivo.type.match(tipoTexto)) {
+            var lector = new FileReader();
+            lector.onload = (evento => {
+                    this.#procesarHTMl(evento.target.result);
+            })
+            lector.readAsText(archivo);
+        }
+        else {
+            alert("¡El archivo seleccionado no es de tipo HTML!");
+        }       
+    }
+
+    #procesarHTMl(html) {
+
+        // 1. Parseamos el HTML usando DOMParser (clase document)
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        // 2. Bajar nivel de encabezados usando métodos del DOM
+        doc.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(el => {
+
+            const nivelActual = parseInt(el.tagName.substring(1));
+            const nuevoNivel = Math.min(nivelActual + 1, 6);
+
+            const nuevo = document.createElement("h" + nuevoNivel);
+            nuevo.innerHTML = el.innerHTML;
+
+            el.replaceWith(nuevo);
+        });
+
+        // 3. Obtener el <main> leído del archivo
+        const main = doc.querySelector("main");
+
+        if (!main) {
+            console.warn("El documento cargado no contiene <main>.");
+            return;
+        }
+        let article = document.querySelector("article");
+        if (article===null){ 
+            article = document.createElement("article");
+        }
+        article.innerHTML = main.innerHTML;
+
+        // 4. Insertarlo en el documento actual usando jQuery
+        $("body").append(article);
+    }
+
+}
+class CargadorSVG{
+    constructor(){
+        this.#inicializarEventos();
+    }
+    #inicializarEventos() {
+        const inputFile = document.querySelectorAll('input');
+        inputFile[1].addEventListener('change', (evento) => {
+            this.leerArchivoSVG(evento.target.files);
+        });
+    }
+
+    leerArchivoSVG(files){
+        const archivo = files[0];
+        if (archivo && archivo.type === 'image/svg+xml') {
+            const lector = new FileReader();
+            lector.onload = (e) => this.#insertarSVG(e.target.result);
+            lector.readAsText(archivo);
+        } else {
+            alert('Selecciona un archivo SVG válido.');
+        }
+    }
+    #insertarSVG(contenidoTexto){
+        const parser = new DOMParser();
+        const documentoSVG = parser.parseFromString(contenidoTexto, 'image/svg+xml');
+        //Cambia la version del SVG a 1.1
+        const elementoSVG = documentoSVG.documentElement;
+        elementoSVG.setAttribute('version', '1.1');
+        let article = document.querySelector("article");
+        if (article===null){ 
+            article = document.createElement("article");
+        }
+        /*
+        elementoSVG.removeAttribute('width');
+        elementoSVG.removeAttribute('height');
+        elementoSVG.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        */
+        article.innerHTML = "";
+        article.appendChild(elementoSVG);
+        $("body").append(article);
+    }
+}
+class CargadorKML{
+
+    #origen;
+    #puntos = [];
+    
+    constructor(){
+        this.#inicializarEventos();
+    }
+    
+    #inicializarEventos() {
+        const inputFile = document.querySelectorAll('input');
+        inputFile[2].addEventListener('change', (evento) => {
+            this.leerArchivoKML(evento.target.files);
+        });
+    }
+    
+    leerArchivoKML(files) {
+        const archivo = files[0];
+        // Verificamos que exista y que sea KML
+        if (archivo && archivo.type === 'application/vnd.google-earth.kml+xml') {
+            const lector = new FileReader();
+            lector.onload = (e) => {this.#procesarKML(e.target.result);
+                this.#insertarCapaKML();};
+            lector.readAsText(archivo);
+        } else {
+            alert('Selecciona un archivo KML válido.');
+        }
+    }
+    
+    #procesarKML(contenidoTexto){
+        const parser = new DOMParser();
+        const documentoKML = parser.parseFromString(contenidoTexto, 'text/xml');
+        //Punto origen
+        const puntoOrigen = documentoKML.querySelector('Point > coordinates');
+        this.#origen = {longitud: puntoOrigen.textContent.split(',')[0], latitud: puntoOrigen.textContent.split(',')[1]};
+        
+        const trazo = documentoKML.querySelector('LineString > coordinates');
+        const coords = trazo.textContent.trim().split(/\s+/);
+        coords.forEach(coord => {
+            this.#puntos.push({ longitud: coord.split(',')[0], latitud: coord.split(',')[1] });
+        });
+        console.log("Origen:", this.#origen);
+        console.log("Puntos:", this.#puntos);
+    }
+    
+    #insertarCapaKML(){
+        mapboxgl.accessToken = 'pk.eyJ1IjoidW8zMDAxOTkiLCJhIjoiY21pdnc2cjZnMGk1ODNlczl0OW80cGZrYSJ9.TGkvSlMH1eDF_S0zTUhCww';
+const contenedor = document.querySelector('body > div');
+
+    const map = new mapboxgl.Map({
+      container: contenedor, // aquí pasamos el nodo DOM
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-3.7038, 40.4168], // Madrid
+      zoom: 10
+    });
+    }
+}
+
+const circuito = new Circuito();
+const cargadorSVG = new CargadorSVG();
+const cargadorKML = new CargadorKML();

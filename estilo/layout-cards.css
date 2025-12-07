@@ -1,0 +1,28 @@
+/*Especifidad 001*/
+main {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+  gap: 1rem;
+}
+
+/*Especifidad 002*/
+main > h2 {
+  grid-column: 1 / -1;   /* el h2 ocupa todas las columnas */
+  text-align: center;    /* centra el texto */
+}
+
+/*Especifidad 002*/
+main > p {
+  grid-column: 1 / -1;   /* el h2 ocupa todas las columnas */
+  text-align: center;    /* centra el texto */
+}
+
+@media (min-width: 320px) and (max-width:799px) {
+    /*Especifidad 001*/
+    main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+        gap: 1rem;
+    }
+
+}

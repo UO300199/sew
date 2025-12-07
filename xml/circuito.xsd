@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.uniovi.es"
+  xmlns="http://www.uniovi.es"
+  elementFormDefault="qualified">
+
+  <xs:element name="circuito">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="nombre" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="longitud_pista" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="anchura_media" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="carrera" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="localidad" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="pais" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="patrocinador" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="referencias" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="galeria_fotos" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="galeria_videos" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="origen" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="tramos" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="resultado_carrera" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="clasificacion_mundial_2025" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  
+  <!-- Tipo para medidas con unidad como atributo -->
+  <xs:complexType name="MedidaType">
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="unidad" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Coordenadas geográficas: longitud, latitud en grados; altitud en metros -->
+  <xs:complexType name="CoordenadaType">
+    <xs:sequence>
+      <xs:element name="longitud" type="MedidaType"/>
+      <xs:element name="latitud" type="MedidaType"/>
+      <xs:element name="altitud" type="MedidaType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Datos básicos -->
+  <xs:element name="nombre" type="xs:string"/>
+  <xs:element name="longitud_pista" type="MedidaType"/>
+  <xs:element name="anchura_media" type="MedidaType"/>
+
+  <!-- Información de carrera -->
+  <xs:element name="carrera">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="fecha_carrera"/>
+        <xs:element ref="hora_inicio"/>
+        <xs:element ref="vueltas"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Fecha en 2025 -->
+  <xs:element name="fecha_carrera">
+    <xs:simpleType>
+      <xs:restriction base="xs:date">
+        <!-- Cualquier fecha de 2025 -->
+        <xs:pattern value="2025-.*"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="hora_inicio">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:time">
+        <xs:attribute name="timezone" type="xs:string" use="required"/>
+      </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Vueltas positivas -->
+  <xs:element name="vueltas" type="xs:positiveInteger"/>
+
+  <!-- Ubicación y patrocinio -->
+  <xs:element name="localidad" type="xs:string"/>
+  <xs:element name="pais" type="xs:string"/>
+  <xs:element name="patrocinador" type="xs:string"/>
+
+  <!-- Referencias (mínimo 3) -->
+  <xs:element name="referencias">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="3" maxOccurs="unbounded" ref="referencia"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="referencia" type="xs:string"/>
+
+  <!-- Galería de fotos (1..5): cada foto tiene src y alt opcional -->
+  <xs:element name="galeria_fotos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="5" ref="foto"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="foto">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="src" type="xs:string"/>
+        <xs:element name="alt" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Galería de videos (1..3): cada video tiene src y type -->
+  <xs:element name="galeria_videos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="3" ref="video"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="video">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="src" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Punto origen del circuito -->
+  <xs:element name="origen" type="CoordenadaType"/>
+
+  <!-- Tramos del circuito -->
+  <xs:element name="tramos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="tramo"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="tramo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="distancia"/>
+        <xs:element ref="punto_final"/>
+        <xs:element ref="sector"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Distancia en metros -->
+  <xs:element name="distancia" type="MedidaType"/>
+
+  <!-- Punto final del tramo: coordenadas -->
+  <xs:element name="punto_final" type="CoordenadaType"/>
+
+  <!-- Número de sector -->
+  <xs:element name="sector" type="xs:positiveInteger"/>
+
+  <!-- Resultado de la carrera -->
+  <xs:element name="resultado_carrera">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="vencedor"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="vencedor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="nombre"/>
+        <xs:element ref="equipo"/>
+        <xs:element ref="tiempo"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Tiempo empleado: validaciones básicas -->
+  <xs:element name="tiempo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="horas"/>
+        <xs:element ref="minutos"/>
+        <xs:element ref="segundos"/>
+        <xs:element ref="milisegundos"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="horas">
+    <xs:simpleType>
+      <xs:restriction base="xs:nonNegativeInteger"/>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="minutos">
+    <xs:simpleType>
+      <xs:restriction base="xs:nonNegativeInteger">
+        <xs:maxInclusive value="59"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="segundos">
+    <xs:simpleType>
+      <xs:restriction base="xs:nonNegativeInteger">
+        <xs:maxInclusive value="59"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="milisegundos">
+    <xs:simpleType>
+      <xs:restriction base="xs:nonNegativeInteger">
+        <xs:maxInclusive value="999"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <!-- Clasificación mundial: exactamente 3 primeros -->
+  <xs:element name="clasificacion_mundial_2025">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="piloto" minOccurs="3" maxOccurs="3"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="piloto">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="nombre"/>
+        <xs:element ref="equipo"/>
+        <xs:element ref="puntos"/>
+      </xs:sequence>
+      <xs:attribute name="posicion" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="equipo" type="xs:string"/>
+  <xs:element name="puntos" type="xs:nonNegativeInteger"/>
+
+</xs:schema>

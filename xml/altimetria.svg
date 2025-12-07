@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="2.0" width="900" height="400" viewBox="0 0 900 400">
+  <text x="260" y="40" fontFamily="Sans-serif" fontSize="18" style="fill:black">Altimetría del circuito</text>
+  <line x1="80" y1="80" x2="80" y2="320" stroke="black" strokeWidth="2" />
+  <line x1="80" y1="320" x2="820" y2="320" stroke="black" strokeWidth="2" />
+  <line x1="80" y1="320.0" x2="820" y2="320.0" stroke="dimgray" strokeWidth="1" />
+  <text x="40.0" y="320.0" fontFamily="Sans-serif" fontSize="10" style="fill:black">10 m</text>
+  <line x1="80" y1="240.0" x2="820" y2="240.0" stroke="dimgray" strokeWidth="1" />
+  <text x="40.0" y="240.0" fontFamily="Sans-serif" fontSize="10" style="fill:black">11 m</text>
+  <line x1="80" y1="160.0" x2="820" y2="160.0" stroke="dimgray" strokeWidth="1" />
+  <text x="40.0" y="160.0" fontFamily="Sans-serif" fontSize="10" style="fill:black">12 m</text>
+  <line x1="80" y1="80.0" x2="820" y2="80.0" stroke="dimgray" strokeWidth="1" />
+  <text x="40.0" y="80.0" fontFamily="Sans-serif" fontSize="10" style="fill:black">13 m</text>
+  <line x1="147.36169274851224" y1="80" x2="147.36169274851224" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="212.76614502975534" y1="80" x2="212.76614502975534" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="227.44544853427377" y1="80" x2="227.44544853427377" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="242.12475203879217" y1="80" x2="242.12475203879217" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="249.79061053559622" y1="80" x2="249.79061053559622" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="274.2561163764602" y1="80" x2="274.2561163764602" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="286.48886929689223" y1="80" x2="286.48886929689223" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="376.1957240467269" y1="80" x2="376.1957240467269" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="405.71743442803614" y1="80" x2="405.71743442803614" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="415.5036367643818" y1="80" x2="415.5036367643818" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="454.974652854309" y1="80" x2="454.974652854309" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="529.512893982808" y1="80" x2="529.512893982808" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="564.5801190213798" y1="80" x2="564.5801190213798" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="585.294247299978" y1="80" x2="585.294247299978" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="596.385276614503" y1="80" x2="596.385276614503" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="634.3883623539784" y1="80" x2="634.3883623539784" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="683.3193740357065" y1="80" x2="683.3193740357065" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="731.5979722283447" y1="80" x2="731.5979722283447" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="780.5289839100727" y1="80" x2="780.5289839100727" y2="320" stroke="dimgray" strokeWidth="1" />
+  <line x1="820.0" y1="80" x2="820.0" y2="320" stroke="dimgray" strokeWidth="1" />
+  <polyline points="80.0,160.0 147.36169274851224,240.0 172.80581882301078,240.0 202.6537359488649,240.0 212.76614502975534,240.0 227.44544853427377,320.0 242.12475203879217,320.0 249.79061053559622,240.0 274.2561163764602,320.0 286.48886929689223,320.0 376.1957240467269,240.0 405.71743442803614,160.0 415.5036367643818,160.0 454.974652854309,240.0 464.27154507383733,240.0 529.512893982808,240.0 564.5801190213798,80.0 585.294247299978,240.0 596.385276614503,160.0 624.6021600176329,160.0 634.3883623539784,160.0 683.3193740357065,240.0 702.0762618470355,240.0 731.5979722283447,240.0 780.5289839100727,160.0 787.0531188009699,160.0 800.4275953273088,160.0 820.0,160.0" stroke="red" strokeWidth="3" fill="none" />
+  <text x="147.36169274851224" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">413</text>
+  <text x="212.76614502975534" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">814</text>
+  <text x="227.44544853427377" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">904</text>
+  <text x="242.12475203879217" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">994</text>
+  <text x="249.79061053559622" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">1041</text>
+  <text x="274.2561163764602" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">1191</text>
+  <text x="286.48886929689223" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">1266</text>
+  <text x="376.1957240467269" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">1816</text>
+  <text x="405.71743442803614" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">1997</text>
+  <text x="415.5036367643818" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">2057</text>
+  <text x="454.974652854309" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">2299</text>
+  <text x="529.512893982808" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">2756</text>
+  <text x="564.5801190213798" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">2971</text>
+  <text x="585.294247299978" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">3098</text>
+  <text x="596.385276614503" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">3166</text>
+  <text x="634.3883623539784" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">3399</text>
+  <text x="683.3193740357065" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">3699</text>
+  <text x="731.5979722283447" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">3995</text>
+  <text x="780.5289839100727" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">4295</text>
+  <text x="820.0" y="350" fontFamily="Sans-serif" fontSize="10" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">4537</text>
+  <text x="20" y="200.0" fontFamily="Sans-serif" fontSize="14" style="writing-mode: tb; glyph-orientation-vertical: 0; fill:black">Altitudes (m)</text>
+  <text x="400.0" y="440.0" fontFamily="Sans-serif" fontSize="14" style="fill:black">Distancias (m)</text>
+</svg>

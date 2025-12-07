@@ -1,0 +1,90 @@
+<!ELEMENT circuito (
+  nombre,
+  longitud_pista,
+  anchura_media,
+  carrera,
+  localidad,
+  pais,
+  patrocinador,
+  referencias,
+  galeria_fotos,
+  galeria_videos,
+  origen,
+  tramos,
+  resultado_carrera,
+  clasificacion_mundial_2025
+)>
+
+<!ELEMENT nombre (#PCDATA)>
+
+<!-- Longitud y anchura con unidades como atributo -->
+<!ELEMENT longitud_pista (#PCDATA)>
+<!ATTLIST longitud_pista unidad NMTOKEN #REQUIRED>
+
+<!ELEMENT anchura_media (#PCDATA)>
+<!ATTLIST anchura_media unidad NMTOKEN #REQUIRED>
+
+<!ELEMENT carrera (fecha_carrera,hora_inicio,vueltas)>
+<!-- Fecha ISO (YYYY-MM-DD) y hora española con timezone -->
+<!ELEMENT fecha_carrera (#PCDATA)>
+<!ELEMENT hora_inicio (#PCDATA)>
+<!ATTLIST hora_inicio timezone CDATA #REQUIRED>
+
+<!ELEMENT vueltas (#PCDATA)>
+
+<!ELEMENT localidad (#PCDATA)>
+<!ELEMENT pais (#PCDATA)>
+<!ELEMENT patrocinador (#PCDATA)>
+
+<!-- Referencias: mínimo 3 en XML; el DTD exige al menos 1 (limitación de DTD) -->
+<!ELEMENT referencias (referencia+)>
+<!ELEMENT referencia (#PCDATA)>
+
+<!-- Galería de fotos: 1 a 5; DTD solo puede asegurar al menos 1 -->
+<!ELEMENT galeria_fotos (foto+)>
+<!ELEMENT foto (src,alt?)>
+<!ELEMENT src (#PCDATA)>
+<!ELEMENT alt (#PCDATA)>
+
+<!-- Galería de videos: 1 a 3; DTD solo asegura al menos 1 -->
+<!ELEMENT galeria_videos (video+)>
+<!ELEMENT video (src, type)>
+<!ELEMENT type (#PCDATA)>
+
+<!-- Punto origen del circuito -->
+<!ELEMENT origen (longitud, latitud, altitud)>
+<!ELEMENT longitud (#PCDATA)>
+<!ELEMENT latitud (#PCDATA)>
+<!ELEMENT altitud (#PCDATA)>
+<!ATTLIST longitud unidad NMTOKEN #REQUIRED>
+<!ATTLIST latitud unidad NMTOKEN #REQUIRED>
+<!ATTLIST altitud unidad NMTOKEN #REQUIRED>
+
+<!-- Tramos anónimos que definen sectores, rectas y curvas -->
+<!ELEMENT tramos (tramo+)>
+<!ELEMENT tramo (distancia, punto_final, sector)>
+<!ATTLIST tramo id ID #REQUIRED>
+<!--Mirar si cambiar sector a atributo de tramo -->
+
+<!ELEMENT distancia (#PCDATA)>
+<!ATTLIST distancia unidad NMTOKEN #REQUIRED>
+
+<!ELEMENT punto_final (longitud, latitud, altitud)>
+
+<!ELEMENT sector (#PCDATA)>
+
+<!-- Resultado de carrera: vencedor y su tiempo -->
+<!ELEMENT resultado_carrera (vencedor)>
+<!ELEMENT vencedor (nombre, equipo, tiempo)>
+<!ELEMENT tiempo (horas, minutos, segundos, milisegundos)>
+<!ELEMENT horas (#PCDATA)>
+<!ELEMENT minutos (#PCDATA)>
+<!ELEMENT segundos (#PCDATA)>
+<!ELEMENT milisegundos (#PCDATA)>
+
+<!-- Top 3 del mundial 2025 tras la carrera -->
+<!ELEMENT clasificacion_mundial_2025 (piloto, piloto, piloto)>
+<!ELEMENT piloto (nombre, equipo, puntos)>
+<!ATTLIST piloto posicion NMTOKEN #REQUIRED>
+<!ELEMENT equipo (#PCDATA)>
+<!ELEMENT puntos (#PCDATA)>
