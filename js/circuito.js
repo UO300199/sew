@@ -50,7 +50,7 @@ class Circuito {
         doc.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(el => {
 
             const nivelActual = parseInt(el.tagName.substring(1));
-            const nuevoNivel = Math.min(nivelActual + 1, 6);
+            const nuevoNivel = Math.min(nivelActual + 2, 6);
 
             const nuevo = document.createElement("h" + nuevoNivel);
             nuevo.innerHTML = el.innerHTML;
@@ -71,8 +71,10 @@ class Circuito {
         }
         article.innerHTML = main.innerHTML;
 
-        // 4. Insertarlo en el documento actual usando jQuery
-        $("body").append(article);
+        const mainEl = document.querySelector("main");
+
+        // Inserta después de <main>, esto es así para no tener problemas con el mapa
+        mainEl.after(article);
     }
 
 }
@@ -114,7 +116,11 @@ class CargadorSVG{
         */
         article.innerHTML = "";
         article.appendChild(elementoSVG);
-        $("body").append(article);
+
+        const mainEl = document.querySelector("main");
+
+        // Inserta después de <main>, esto es así para no tener problemas con el mapa
+        mainEl.after(article);
     }
 }
 class CargadorKML{
@@ -164,14 +170,60 @@ class CargadorKML{
     
     #insertarCapaKML(){
         mapboxgl.accessToken = 'pk.eyJ1IjoidW8zMDAxOTkiLCJhIjoiY21pdnc2cjZnMGk1ODNlczl0OW80cGZrYSJ9.TGkvSlMH1eDF_S0zTUhCww';
-const contenedor = document.querySelector('body > div');
+        const contenedor = document.querySelector('body > div');
 
-    const map = new mapboxgl.Map({
-      container: contenedor, // aquí pasamos el nodo DOM
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-3.7038, 40.4168], // Madrid
-      zoom: 10
-    });
+        const map = new mapboxgl.Map({
+            container: contenedor, // aquí pasamos el nodo DOM
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [this.#origen.longitud, this.#origen.latitud], // Madrid
+            zoom: 13 
+        });
+
+        const lineaMeta = new mapboxgl.Marker()
+        .setLngLat([this.#origen.longitud, this.#origen.latitud])
+        .addTo(map);
+
+        // Añadir una polilínea con los puntos del KML
+        const coordinates = this.#puntos.map(p => [parseFloat(p.longitud), parseFloat(p.latitud)]);
+
+        map.on('load', () => {
+            if (coordinates.length > 0) {
+                // Añadimos la fuente GeoJSON con la LineString
+                map.addSource('kml-line', {
+                    type: 'geojson',
+                    data: {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: coordinates
+                        }
+                    }
+                });
+
+                // Añadimos la capa de línea
+                map.addLayer({
+                    id: 'kml-line',
+                    type: 'line',
+                    source: 'kml-line',
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    paint: {
+                        'line-color': '#ff0000',
+                        'line-width': 4
+                    }
+                });
+
+                
+            }
+        });
+
+        const mainEl = document.querySelector("main");
+
+        // Inserta después de <main>
+        mainEl.after(contenedor);
+
     }
 }
 

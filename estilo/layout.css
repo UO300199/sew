@@ -37,6 +37,14 @@ main input {
     margin-bottom: 1em; /* espacio entre líneas */
 }
 
+/*Pensado para el contenedor del mapa*/
+/*Especificidad 002*/
+body > div {
+    width: 50%;
+    height: 50vh; 
+}
+
+
 @media (min-width: 320px) and (max-width:799px) {
     /* Especifidad 001 */
     header {
@@ -96,6 +104,13 @@ main input {
     article > section a {
         word-break: break-word;   /* or 'break-all' */
         overflow-wrap: anywhere;  /* modern, preferred */
+    }
+
+    /*Pensado para el contenedor del mapa*/
+    /*Especificidad 002*/
+    body > div {
+        width: 100%;
+        height: 50vh; 
     }
 
 }

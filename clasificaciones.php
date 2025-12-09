@@ -31,7 +31,53 @@
 		</nav>
 	</header>
 	<p>Estás en: <a href="index.html" title="Página de inicio">Inicio</a> >> <strong>Clasificaciones</strong></p>
+	<main>
 	<h2>Clasificaciones de MotoGP</h2>
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+	<?php
+		class Clasificacion {
+			private $documento;
+
+			public function __construct() {
+				$this->documento = "xml/circuitoEsquema.xml";
+			}
+
+			public function consultar() {
+				$datos = file_get_contents($this->documento);
+				if ($datos == null){
+					echo "<p>Error al leer el documento XML.</p>";
+				} else {
+					// Se convierte el string en un objeto XML
+					$xml = new SimpleXMLElement($datos);
+					$this->mostrarGanador($xml);
+					$this->mostrarClasificacion($xml);
+				}
+			}
+
+			private function mostrarGanador($xml) {
+				echo "<h3>Ganador de la carrera</h3>";
+				echo "<p>Vencedor: {$xml->resultado_carrera->vencedor->nombre}</p>";
+				echo "<p>Equipo: {$xml->resultado_carrera->vencedor->equipo}</p>";
+				echo "<p>Tiempo: {$xml->resultado_carrera->vencedor->tiempo->horas}h {$xml->resultado_carrera->vencedor->tiempo->minutos}m {$xml->resultado_carrera->vencedor->tiempo->segundos}s {$xml->resultado_carrera->vencedor->tiempo->milisegundos}ms</p>";
+			}
+
+			private function mostrarClasificacion($xml) {
+				echo "<h3>Clasificación tras la carrera</h3>";
+				echo "<ul>";
+				foreach ($xml->clasificacion_mundial_2025->piloto as $piloto) {
+					echo "<li>";
+					echo "Posición: {$piloto['posicion']}, ";
+					echo "Nombre: {$piloto->nombre}, ";
+					echo "Equipo: {$piloto->equipo}, ";
+					echo "Puntos: {$piloto->puntos}";
+					echo "</li>";
+				}
+				echo "</ul>";
+			}
+		}
+
+		$clasificacion = new Clasificacion();
+		$clasificacion->consultar();
+	?>
+	</main>
 </body>
 </html>
