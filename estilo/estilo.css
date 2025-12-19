@@ -9,7 +9,7 @@ body {
 
 /*Especifidad 001*/
 header {
-  /*Hereda color #000000 de body*/
+  /*Hereda color de primer plano #000000 de body*/
   background-color: #000000;
 }
 
@@ -39,8 +39,8 @@ header > h1 > a {
   text-decoration-line: none;
 }
 
-/*Especificidad 002*/
-header a { 
+/*Especificidad 003*/
+header > nav a { 
   /*Herencia de background-color #000000 de header*/
   color: #ffb7b7;
   text-decoration-line: none;

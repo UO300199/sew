@@ -6,7 +6,7 @@ CREATE TABLE Usuarios (
     edad INT NOT NULL,
     CHECK (edad > 0),
 
-    genero ENUM('masculino', 'femenino') NOT NULL,
+    genero ENUM('masculino', 'femenino', 'otro') NOT NULL,
 
     pericia_informatica INT NOT NULL,
     CHECK (pericia_informatica >= 0 AND pericia_informatica <= 10)
@@ -17,9 +17,6 @@ CREATE TABLE Usuarios (
 CREATE TABLE TestsUsabilidad (
     id_test INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
-
-    tanda INT NOT NULL,
-    CHECK (tanda > 0),
 
     dispositivo ENUM('ordenador', 'tablet', 'telefono') NOT NULL,
     tiempo_segundos INT NOT NULL,
@@ -36,6 +33,26 @@ CREATE TABLE TestsUsabilidad (
         FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
 );
 
+
+-- Tabla Preguntas
+CREATE TABLE Preguntas(
+    id_pregunta INT AUTO_INCREMENT PRIMARY KEY,
+    enunciado TEXT NOT NULL
+);
+
+-- Tabla Respuestas del usuario
+CREATE TABLE Respuestas (
+    id_respuesta INT AUTO_INCREMENT PRIMARY KEY,
+    id_test INT NOT NULL,
+    id_pregunta INT NOT NULL,
+    respuesta TEXT NOT NULL,
+
+    CONSTRAINT fk_resp_test 
+        FOREIGN KEY (id_test) REFERENCES TestsUsabilidad(id_test),
+
+    CONSTRAINT fk_resp_pregunta 
+        FOREIGN KEY (id_pregunta) REFERENCES Preguntas(id_pregunta)
+);
 
 -- Tabla Observaciones del Facilitador
 CREATE TABLE ObservacionesFacilitador (

@@ -16,16 +16,10 @@ main article {
 
 @media (min-width: 320px) and (max-width:799px) {
     /* especificidad: 002 */
-    /*Aviso por redefinicion ignorar porque es media query*/
+    /*Avisos por redefinicición de width y height IGNORAR porque ya está definido en  main article y esto es mediaquery*/
     main article {
         width: 40vw;
         height: 15em;
-        position: relative;
-        transform: scale(1);
-        cursor: pointer;
-        transform-style: preserve-3d;
-        transition: transform .5s;
-        box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,.3);
     }
 
 
@@ -46,6 +40,7 @@ main article[data-estado=revelada] {
 /* Reglas con los estilos generales para el encabezado y la imagen de la carta */
 /* especificidad: 002 */
 /* especificidad: 002 */
+/*Aviso por herencia de colores. Se está heredando el color del primer plano #000000 de body en estilo.css*/
 article h3,
 article img {
     width: 100%;

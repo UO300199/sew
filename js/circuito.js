@@ -65,16 +65,15 @@ class Circuito {
             console.warn("El documento cargado no contiene <main>.");
             return;
         }
-        let article = document.querySelector("article");
+        const htmlSection = document.querySelector("main>section:nth-of-type(1)");
+        let article = htmlSection.querySelector("article");
         if (article===null){ 
             article = document.createElement("article");
         }
         article.innerHTML = main.innerHTML;
 
-        const mainEl = document.querySelector("main");
 
-        // Inserta después de <main>, esto es así para no tener problemas con el mapa
-        mainEl.after(article);
+        htmlSection.appendChild(article);
     }
 
 }
@@ -105,7 +104,8 @@ class CargadorSVG{
         //Cambia la version del SVG a 1.1
         const elementoSVG = documentoSVG.documentElement;
         elementoSVG.setAttribute('version', '1.1');
-        let article = document.querySelector("article");
+        const svgSection = document.querySelector("main>section:nth-of-type(2)");
+        let article = svgSection.querySelector("article");
         if (article===null){ 
             article = document.createElement("article");
         }
@@ -115,12 +115,14 @@ class CargadorSVG{
         elementoSVG.setAttribute('preserveAspectRatio', 'xMidYMid meet');
         */
         article.innerHTML = "";
+        const tituloSVG = document.createElement("h4");
+        tituloSVG.textContent = "Altimetría del circuito";
+        article.appendChild(tituloSVG);
         article.appendChild(elementoSVG);
 
-        const mainEl = document.querySelector("main");
 
         // Inserta después de <main>, esto es así para no tener problemas con el mapa
-        mainEl.after(article);
+        svgSection.appendChild(article);
     }
 }
 class CargadorKML{
@@ -170,7 +172,7 @@ class CargadorKML{
     
     #insertarCapaKML(){
         mapboxgl.accessToken = 'pk.eyJ1IjoidW8zMDAxOTkiLCJhIjoiY21pdnc2cjZnMGk1ODNlczl0OW80cGZrYSJ9.TGkvSlMH1eDF_S0zTUhCww';
-        const contenedor = document.querySelector('body > div');
+        const contenedor = document.querySelector('body > main > section > div');
 
         const map = new mapboxgl.Map({
             container: contenedor, // aquí pasamos el nodo DOM
@@ -219,10 +221,9 @@ class CargadorKML{
             }
         });
 
-        const mainEl = document.querySelector("main");
+        const sectionMap = document.querySelector("main>section:nth-of-type(3)");
 
-        // Inserta después de <main>
-        mainEl.after(contenedor);
+        sectionMap.append(contenedor);
 
     }
 }

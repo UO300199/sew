@@ -20,9 +20,8 @@ main > p {
 @media (min-width: 320px) and (max-width:799px) {
     /*Especifidad 001*/
     main {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-        gap: 1rem;
+      /*Aviso por redefinición de grid-template-columns IGNORAR porque ya está definido en main original y esto es mediaquery*/
+      grid-template-columns: repeat(2, 1fr); /* 2 columnas */
     }
 
 }

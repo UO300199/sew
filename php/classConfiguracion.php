@@ -21,7 +21,7 @@ class Configuracion {
         $conn = @new mysqli($this->servername, $this->username, $this->password);
         
         if ($conn->connect_error) {
-            die("❌ Error: No se puede conectar al servidor MySQL. Verifica que XAMPP esté ejecutándose y las credenciales sean correctas.<br>Error: " . $conn->connect_error);
+            echo "<p>Error: No se puede conectar al servidor MySQL. " . $conn->connect_error . "</p>";
         }
         
         $conn->close();
@@ -32,18 +32,20 @@ class Configuracion {
         $conn = new mysqli($this->servername, $this->username, $this->password);
 
         if ($conn->connect_error) {
-            die("❌ Conexión fallida al servidor: " . $conn->connect_error);
+            $conn->close();
+            die("<p>Error: No se puede conectar al servidor MySQL. " . $conn->connect_error . "</p>");
         }
         
         return $conn;
     }
 
     // Método para conectar a la base de datos específica
-    private function conectarBD() {
+    public function conectarBD() {
         $conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
 
         if ($conn->connect_error) {
-            die("❌ Conexión fallida a la base de datos: " . $conn->connect_error);
+            $conn->close();
+            die("<p>Conexión fallida a la base de datos: " . $conn->connect_error . "</p>");
         }
         
         return $conn;
@@ -54,11 +56,11 @@ class Configuracion {
         $conn = $this->conectarServidor();
 
         // Crear la base de datos
-        $sql = "CREATE DATABASE IF NOT EXISTS " . $this->dbname . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+        $sql = "CREATE DATABASE IF NOT EXISTS " . $this->dbname . " COLLATE utf8_spanish_ci";
         if ($conn->query($sql) === TRUE) {
-            echo "✅ Base de datos '{$this->dbname}' creada correctamente<br>";
+            echo "<p>Base de datos '{$this->dbname}' creada correctamente</p>";
         } else {
-            echo "❌ Error al crear la base de datos: " . $conn->error . "<br>";
+            echo "<p>Error al crear la base de datos: " . $conn->error . "</p>";
             $conn->close();
             return;
         }
@@ -75,36 +77,28 @@ class Configuracion {
             $sql = file_get_contents($sqlFile);
             
             if ($conn->multi_query($sql)) {
-                echo "✅ Script SQL ejecutado correctamente<br>";
+                echo "<p>Script SQL ejecutado correctamente</p>";
                 
-                // Limpiar resultados pendientes
-                while ($conn->next_result()) {
-                    if ($result = $conn->store_result()) {
-                        $result->free();
-                    }
-                }
             } else {
-                echo "❌ Error al ejecutar el script SQL: " . $conn->error . "<br>";
+                echo "<p>Error al ejecutar el script SQL: " . $conn->error . "</p>";
             }
         } else {
-            // Si no existe el archivo, crear las tablas directamente
-            echo "⚠️ Archivo esquema.sql no encontrado, creando tablas desde el código...<br>";
+            echo "<p>Archivo esquema.sql no encontrado.</p>";
         }
 
         $conn->close();
-        echo "<strong>🎉 Proceso completado</strong><br>";
+        echo "<p>Proceso completado</p>";
     }
 
-    
     // Método 3: Borrar la base de datos
     public function borrarBD() {
         $conn = $this->conectarServidor();
 
         $sql = "DROP DATABASE IF EXISTS " . $this->dbname;
         if ($conn->query($sql) === TRUE) {
-            echo "🗑️ Base de datos '{$this->dbname}' eliminada correctamente<br>";
+            echo "<p>Base de datos '{$this->dbname}' eliminada correctamente</p>";
         } else {
-            echo "❌ Error al eliminar la base de datos: " . $conn->error . "<br>";
+            echo "<p>Error al eliminar la base de datos: " . $conn->error . "</p>";
         }
 
         $conn->close();
@@ -114,121 +108,145 @@ class Configuracion {
     public function reiniciarBD() {
         $conn = $this->conectarBD();
 
-        // Desactivar verificación de claves foráneas temporalmente
         $conn->query("SET FOREIGN_KEY_CHECKS = 0");
 
-        // Obtener todas las tablas de la base de datos
         $result = $conn->query("SHOW TABLES");
         
         if ($result) {
             while ($row = $result->fetch_array()) {
                 $table = $row[0];
                 if ($conn->query("TRUNCATE TABLE $table")) {
-                    echo "✅ Datos de la tabla '$table' eliminados correctamente<br>";
+                    echo "<p>Datos de la tabla '$table' eliminados correctamente</p>";
                 } else {
-                    echo "❌ Error eliminando datos de '$table': " . $conn->error . "<br>";
+                    echo "<p>Error eliminando datos de '$table': " . $conn->error . "</p>";
                 }
             }
         } else {
-            echo "❌ Error al obtener las tablas: " . $conn->error . "<br>";
+            echo "<p>Error al obtener las tablas: " . $conn->error . "</p>";
         }
 
-        // Reactivar verificación de claves foráneas
         $conn->query("SET FOREIGN_KEY_CHECKS = 1");
 
         $conn->close();
-        echo "<strong>🎉 Datos reiniciados</strong><br>";
+        echo "<p>Datos reiniciados</p>";
     }
 
     // Método 5: Exportar datos
     public function exportarDatos() {
         $conn = $this->conectarBD();
 
-        // Obtener todas las tablas
-        $result = $conn->query("SHOW TABLES");
-        $tablasExportadas = 0;
+        $sql = "
+            SELECT 
+                u.id_usuario,
+                u.profesion,
+                u.edad,
+                u.genero,
+                u.pericia_informatica,
 
-        if ($result) {
-            while ($row = $result->fetch_array()) {
-                $tabla = $row[0];
-                $filename = strtolower($tabla) . "_data.csv";
-                
-                if ($this->exportarTabla($conn, $tabla, $filename)) {
-                    $tablasExportadas++;
-                }
-            }
-        }
+                t.id_test,
+                t.dispositivo,
+                t.tiempo_segundos,
+                CASE WHEN t.completado=1 THEN 'Si' ELSE 'No' END AS completado,
+                t.comentarios,
+                t.propuestas_mejora,
+                t.valoracion,
 
-        $conn->close();
-        
-        if ($tablasExportadas > 0) {
-            echo "<strong>🎉 Exportación completada: $tablasExportadas tabla(s)</strong><br>";
-        } else {
-            echo "⚠️ No hay datos para exportar<br>";
-        }
-    }
+                o.id_observacion,
+                o.comentarios AS observaciones_facilitador,
 
-    // Método auxiliar para exportar una tabla específica
-    private function exportarTabla($conn, $tabla, $filename) {
-        $sql = "SELECT * FROM $tabla";
+                MAX(CASE WHEN r.id_pregunta = 1  THEN r.respuesta END) AS p_1,
+                MAX(CASE WHEN r.id_pregunta = 2  THEN r.respuesta END) AS p_2,
+                MAX(CASE WHEN r.id_pregunta = 3  THEN r.respuesta END) AS p_3,
+                MAX(CASE WHEN r.id_pregunta = 4  THEN r.respuesta END) AS p_4,
+                MAX(CASE WHEN r.id_pregunta = 5  THEN r.respuesta END) AS p_5,
+                MAX(CASE WHEN r.id_pregunta = 6  THEN r.respuesta END) AS p_6,
+                MAX(CASE WHEN r.id_pregunta = 7  THEN r.respuesta END) AS p_7,
+                MAX(CASE WHEN r.id_pregunta = 8  THEN r.respuesta END) AS p_8,
+                MAX(CASE WHEN r.id_pregunta = 9  THEN r.respuesta END) AS p_9,
+                MAX(CASE WHEN r.id_pregunta = 10 THEN r.respuesta END) AS p_10
+            FROM Usuarios u
+            JOIN TestsUsabilidad t
+                ON u.id_usuario = t.id_usuario
+            LEFT JOIN ObservacionesFacilitador o
+                ON t.id_test = o.id_test
+            LEFT JOIN Respuestas r
+                ON t.id_test = r.id_test
+            GROUP BY
+                u.id_usuario,
+                u.profesion,
+                u.edad,
+                u.genero,
+                u.pericia_informatica,
+                t.id_test,
+                t.dispositivo,
+                t.tiempo_segundos,
+                t.completado,
+                t.comentarios,
+                t.propuestas_mejora,
+                t.valoracion,
+                o.comentarios,
+                o.id_observacion
+            ORDER BY u.id_usuario, t.id_test
+        ";
+
         $result = $conn->query($sql);
 
         if ($result && $result->num_rows > 0) {
+            $filename = "export_usuarios_tests.csv";
             $file = fopen($filename, "w");
 
-            // Escribir encabezados
-            $headers = array();
+            // Escribir cabeceras
             $fields = $result->fetch_fields();
+            $headers = [];
             foreach ($fields as $field) {
                 $headers[] = $field->name;
             }
             fputcsv($file, $headers);
 
-            // Escribir datos
+            // Escribir filas
             while ($row = $result->fetch_assoc()) {
+                // Limpiar saltos de línea de todos los campos de texto
+                foreach ($row as $key => $value) {
+                    if (is_string($value)) {
+                        // Reemplazar saltos de línea por espacios
+                        $row[$key] = str_replace(["\r\n", "\r", "\n"], ' ', $value);
+                        // Eliminar espacios al inicio y final
+                        $row[$key] = trim($row[$key]);
+                    }
+                }
                 fputcsv($file, $row);
             }
 
             fclose($file);
-            echo "✅ Datos de '$tabla' exportados a '$filename' ({$result->num_rows} registro(s))<br>";
-            return true;
+            echo "<p>Datos exportados a '$filename' ({$result->num_rows} registro(s))</p>";
         } else {
-            echo "⚠️ No hay datos en la tabla '$tabla'<br>";
-            return false;
+            echo "<p>No hay datos para exportar con la consulta proporcionada</p>";
         }
-    }
 
-    // Método adicional: Verificar estado de la BD
-    public function verificarEstado() {
-        $conn = $this->conectarServidor();
-        
-        // Verificar si existe la base de datos
-        $result = $conn->query("SHOW DATABASES LIKE '{$this->dbname}'");
-        
-        if ($result->num_rows > 0) {
-            echo "✅ La base de datos '{$this->dbname}' existe<br>";
-            
-            $conn->close();
-            $conn = $this->conectarBD();
-            
-            // Mostrar las tablas
-            $result = $conn->query("SHOW TABLES");
-            if ($result->num_rows > 0) {
-                echo "📊 Tablas encontradas:<br>";
-                while ($row = $result->fetch_array()) {
-                    $tabla = $row[0];
-                    $countResult = $conn->query("SELECT COUNT(*) as total FROM $tabla");
-                    $count = $countResult->fetch_assoc()['total'];
-                    echo "&nbsp;&nbsp;&nbsp;• $tabla ($count registro(s))<br>";
-                }
-            } else {
-                echo "⚠️ No hay tablas en la base de datos<br>";
-            }
-        } else {
-            echo "❌ La base de datos '{$this->dbname}' NO existe<br>";
-        }
-        
         $conn->close();
     }
+
+    // Insertar datos de prueba
+    public function insertarPreguntas() {
+        $conn = $this->conectarBD();
+
+        $sqlFile =  "preguntas.sql";
+        
+        if (file_exists($sqlFile)) {
+            $sql = file_get_contents($sqlFile);
+            
+            if ($conn->multi_query($sql)) {
+                echo "<p>Preguntas añadidas correctamente</p>";
+                
+            } else {
+                echo "<p>Error al ejecutar el script SQL: " . $conn->error . "</p>";
+            }
+        } else {
+            echo "<p>Archivo preguntas.sql no encontrado.</p>";
+        }
+
+        $conn->close();
+    }
+
 }
 ?>

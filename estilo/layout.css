@@ -21,13 +21,20 @@ header nav {
 }
 
 /*Pensado para cuando se carga el documento infoCircuito.html*/
-/*Especificidad 003*/
-article > section > img {
+/*Especificidad 004*/
+main > article > section > img {
     width: 40vw;
     height: auto;
     /*para que cada imagen se muestre en una linea distinta*/
     display: block;
     margin-bottom: 1em;
+}
+
+/*Pensado para cuando se carga el archivo altimetria.svg*/
+/*Especificidad 003*/
+main > article > svg {
+    width: 70vw;
+    height: auto;
 }
 
 /*Pensado para mostrar cada label en una línea distinta*/
@@ -38,8 +45,8 @@ main input {
 }
 
 /*Pensado para el contenedor del mapa*/
-/*Especificidad 002*/
-body > div {
+/*Especificidad 003*/
+main > section > div {
     width: 50%;
     height: 50vh; 
 }
@@ -48,19 +55,19 @@ body > div {
 @media (min-width: 320px) and (max-width:799px) {
     /* Especifidad 001 */
     header {
-        /*Avisos por definicición pero son definidos en header original, y esto es mediaquery*/
+        /*Avisos por redefinicición de flex-direction y align-itmes, IGNORAR porque son definidos en header original, y esto es mediaquery*/
         flex-direction: column;
         align-items: stretch;
         gap: 1em;
     }
     /* Especifidad 002*/
     header nav {
-        /*Avisos por definicición pero son definidos en header nav original, y esto es mediaquery*/
+        /*Avisos por redefiniciciones IGNORAR porque son definidos en header nav original, y esto es mediaquery*/
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
-        gap: 1em;
     }
+
     /*Especifidad 012*/
     body > p:first-of-type {
         display: none;
@@ -84,33 +91,32 @@ body > div {
     }
 
     /*Pensado para cuando se carga el documento infoCircuito.html*/
-    /*Especificidad 003*/
-    article > section > img {
+    /*Especificidad 004*/
+    main > article > section > img {
+        /*Aviso por redefinicición IGNORAR porque es definido en  main > article > section > img original, y esto es mediaquery*/
         width: 100%;
-        height: auto;
     }
 
 
 
     /*Pensado para cuando se carga el archivo altimetria.svg*/
-    /*Especificidad 002*/
-    article svg {
+    /*Especificidad 003*/
+    main > article > svg {
+        /*Aviso por redefinicición IGNORAR porque es definido en  main > article > svg original, y esto es mediaquery*/
         width: 100%;
-        height: auto;
     }
 
     /*Pensado para no cortar los enlaces en móvil*/
     /*Especificidad 003*/
     article > section a {
-        word-break: break-word;   /* or 'break-all' */
-        overflow-wrap: anywhere;  /* modern, preferred */
+        overflow-wrap: anywhere;
     }
 
     /*Pensado para el contenedor del mapa*/
-    /*Especificidad 002*/
-    body > div {
+    /*Especificidad 003*/
+    main > section > div {
+        /*Aviso por redefinicición IGNORAR porque es definido en  main > section > div original, y esto es mediaquery*/
         width: 100%;
-        height: 50vh; 
     }
 
 }

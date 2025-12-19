@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <title>MotoGP-CronometroPHP</title>
 	<meta name="author" content="Julián Fernández"/>
-	<meta name="description" content="cronometro PHP de MotoGP Desktop"/>
+	<meta name="description" content="Cronometro PHP de MotoGP Desktop"/>
 	<meta name="keywords" content="moto, cronometro, MotoGP"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
     <link rel="stylesheet" type="text/css" href="estilo/estilo.css" />

@@ -41,7 +41,7 @@ xsi:schemaLocation="http://www.uniovi.es circuito.xsd"
         </video>
     </galeria_videos>
 
-    <!-- Origen: centro de pista en línea de salida (WGS84) -->
+    <!-- Origen: centro de pista en línea de salida -->
     <origen>
         <longitud unidad="deg">6.524123</longitud>
         <latitud unidad="deg">52.962276</latitud>

@@ -12,31 +12,41 @@ import xml.etree.ElementTree as ET
 class Svg(object):
     """Genera archivos SVG con líneas, polilíneas y texto"""
     def __init__(self):
-        self.raiz = ET.Element('svg', xmlns="http://www.w3.org/2000/svg", version="2.0")
+        # SVG 1.1 y espacio de nombres correcto
+        self.raiz = ET.Element('svg', attrib={
+            'xmlns': "http://www.w3.org/2000/svg",
+            'version': "1.1"
+        })
 
-    def addLine(self, x1, y1, x2, y2, stroke, strokeWidth):
-        ET.SubElement(self.raiz, 'line',
-                      x1=str(x1), y1=str(y1),
-                      x2=str(x2), y2=str(y2),
-                      stroke=stroke, strokeWidth=str(strokeWidth))
+    def addLine(self, x1, y1, x2, y2, stroke, stroke_width):
+        ET.SubElement(self.raiz, 'line', attrib={
+            'x1': str(x1), 'y1': str(y1),
+            'x2': str(x2), 'y2': str(y2),
+            'stroke': stroke,
+            'stroke-width': str(stroke_width)
+        })
 
-    def addPolyline(self, points, stroke, strokeWidth, fill):
-        ET.SubElement(self.raiz, 'polyline',
-                      points=points,
-                      stroke=stroke,
-                      strokeWidth=str(strokeWidth),
-                      fill=fill)
+    def addPolyline(self, points, stroke, stroke_width, fill):
+        ET.SubElement(self.raiz, 'polyline', attrib={
+            'points': points,
+            'stroke': stroke,
+            'stroke-width': str(stroke_width),
+            'fill': fill
+        })
 
-    def addText(self, texto, x, y, fontFamily, fontSize, style):
-        ET.SubElement(self.raiz, 'text',
-                      x=str(x), y=str(y),
-                      fontFamily=fontFamily,
-                      fontSize=str(fontSize),
-                      style=style).text = texto
+    def addText(self, texto, x, y, transform=None, text_anchor=None):
+        attrib = {
+            'x': str(x), 'y': str(y)
+        }
+        if transform:
+            attrib['transform'] = transform
+        if text_anchor:
+            attrib['text-anchor'] = text_anchor
+        ET.SubElement(self.raiz, 'text', attrib=attrib).text = texto
 
     def escribir(self, nombreArchivoSVG):
         arbol = ET.ElementTree(self.raiz)
-        ET.indent(arbol)
+        ET.indent(arbol)  # requiere Python 3.9+
         arbol.write(nombreArchivoSVG, encoding='utf-8', xml_declaration=True)
 
 
@@ -44,7 +54,7 @@ def main():
     nombreXML = input('Introduzca el nombre del archivo XML de origen: ')
     nombreSVG = input('Introduzca el nombre del archivo SVG de destino: ')
 
-    #Namespace
+    # Namespace del XML de origen
     ns = '{http://www.uniovi.es}'
 
     tree = ET.parse(nombreXML)
@@ -56,8 +66,7 @@ def main():
 
     alt_origen = root.find(f'.//{ns}origen/{ns}altitud')
     altitudes.append(float(alt_origen.text.strip()))
-
-    altitud_unidad = alt_origen.attrib["unidad"]
+    altitud_unidad = alt_origen.attrib.get("unidad", "")
 
     # --- Recorrer tramos ---
     total = 0.0
@@ -67,7 +76,8 @@ def main():
     distancia_unidad = ''
     if tramos:
         d_el0 = tramos[0].find(f'{ns}distancia')
-        distancia_unidad = d_el0.attrib['unidad']
+        distancia_unidad = d_el0.attrib.get('unidad', '')
+
     for t in tramos:
         d_el = t.find(f'{ns}distancia')
         dist = float(d_el.text.strip())
@@ -77,81 +87,78 @@ def main():
         alt_el = pf.find(f'{ns}altitud')
         altitudes.append(float(alt_el.text.strip()))
 
-
     # --- Escalado para SVG ---
     ancho, alto = 900, 400
     margen = 80
     max_alt = max(altitudes)
     min_alt = min(altitudes)
-    max_dist = total
+    max_dist = total if total > 0 else 1.0  # evitar división por cero
 
     escala_x = (ancho - 2*margen) / max_dist
     escala_y = (alto - 2*margen) / (max_alt - min_alt if max_alt != min_alt else 1)
 
     # --- Construir puntos del perfil ---
-    puntos = ""
+    puntos = []
     for d, alt in zip(distancias, altitudes):
         x = margen + d * escala_x
         y = alto - margen - (alt - min_alt) * escala_y
-        puntos += f"{x},{y} "
+        puntos.append(f"{round(x, 3)},{round(y, 3)}")
+    puntos_str = " ".join(puntos)
 
     # --- Crear SVG ---
     svg = Svg()
-    # Añadir atributos de tamaño y viewBox al elemento <svg>
+    # Atributos de tamaño y viewBox al elemento <svg>
     svg.raiz.set('width', str(ancho))
     svg.raiz.set('height', str(alto))
     svg.raiz.set('viewBox', f"0 0 {ancho} {alto}")
-    svg.addText("Altimetría del circuito", margen + 180, 40, "Sans-serif", "18", "fill:black")
+
+    # Título
+    svg.addText("Altimetría del circuito", margen + 180, 40)
 
     # Ejes principales
     svg.addLine(margen, margen, margen, alto - margen, "black", 2)
     svg.addLine(margen, alto - margen, ancho - margen, alto - margen, "black", 2)
 
-    # --- Líneas horizontales (altitudes) ---
+    # --- Líneas horizontales (altitudes) y etiquetas ---
     for alt in sorted(set(altitudes)):
         y = alto - margen - (alt - min_alt) * escala_y
         svg.addLine(margen, y, ancho - margen, y, "dimgray", 1)
-        svg.addText(f"{alt:.0f} {altitud_unidad}", margen/2, y, "Sans-serif", "10", "fill:black")
+        svg.addText(f"{int(round(alt))} {altitud_unidad}", margen/2, y)
 
     # --- Líneas verticales (distancias) ---
-    # Dibujamos línea vertical donde HAY cambio de altitud o en el punto final
     for idx in range(len(distancias)):
-        # Verificar si hay cambio: comparar con el anterior (si existe)
         hay_cambio = False
         es_final = (idx == len(distancias) - 1)
-        
         if idx > 0 and not es_final and (altitudes[idx] != altitudes[idx-1] or altitudes[idx] != altitudes[idx+1]):
             hay_cambio = True
-        
         if hay_cambio or es_final:
             x = margen + distancias[idx] * escala_x
             svg.addLine(x, margen, x, alto - margen, "dimgray", 1)
 
-    # La gráfica debe dibujarse después de los ejes
-    svg.addPolyline(puntos.strip(), "red", "3", "none")
+    # --- Perfil (polilínea) ---
+    svg.addPolyline(puntos_str, "red", 3, "none")
 
     # --- Etiquetas de eje X (distancias) ---
-    # Ponemos etiqueta donde hay cambio de altitud o en el punto final
     for idx in range(len(distancias)):
         hay_cambio = False
         es_final = (idx == len(distancias) - 1)
-        
         if idx > 0 and not es_final and (altitudes[idx] != altitudes[idx-1] or altitudes[idx] != altitudes[idx+1]):
             hay_cambio = True
-        
         if hay_cambio or es_final:
             x = margen + distancias[idx] * escala_x
-            svg.addText(f"{int(distancias[idx])}", x, alto - margen + 30,
-                    "Sans-serif", "10",
-                    "writing-mode: tb; glyph-orientation-vertical: 0; fill:black")
+            y = alto - margen + 10
+            svg.addText(f"{int(round(distancias[idx]))}", x, y,
+                        transform=f"rotate(90,{x},{y})",
+                        text_anchor="start")
 
     # --- Títulos de ejes ---
-    # Eje Y (vertical)
-    svg.addText(f"Altitudes ({altitud_unidad})", 20, alto / 2, "Sans-serif", "14",
-                "writing-mode: tb; glyph-orientation-vertical: 0; fill:black")
-    # Eje X (horizontal)
-    svg.addText(f"Distancias ({distancia_unidad})", ancho / 2 - 50, alto + margen/2,
-                "Sans-serif", "14", "fill:black")
+    y_title_x = 20
+    y_title_y = alto / 2
+    svg.addText(f"Altitudes ({altitud_unidad})", y_title_x, y_title_y,
+                transform=f"rotate(90,{y_title_x},{y_title_y})",
+                text_anchor="middle")
+
+    svg.addText(f"Distancias ({distancia_unidad})", ancho / 2 - 50, alto - margen + 70)
 
     # --- Guardar SVG ---
     svg.escribir(nombreSVG)

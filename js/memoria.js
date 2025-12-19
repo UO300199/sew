@@ -80,7 +80,6 @@ class Memoria {
     }
 
     #barajarCartas() {
-        // Seleccionamos el contenedor de las cartas (por ejemplo, un <section> o <div>)
         const tablero = document.querySelector("main"); 
         
         // Convertimos la colección de cartas en un array para poder manipularlo
